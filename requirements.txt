@@ -1,0 +1,4 @@
+# Multi-Layer Brain Twin — Pilot Demo
+# No external dependencies required.
+# pilot_demo.py relies only on the Python standard library
+# (enum, dataclasses) — Python 3.7+ is sufficient.
