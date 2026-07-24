@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "MLBT Layer Data — Illustrative Schema",
+  "description": "Public illustrative schema describing the structure of data exchanged between layers of the Multi-Layer Brain Twin (MLBT) pilot demo. This schema describes DATA SHAPE ONLY. It does not include the proprietary context-detection rules, layer-selection heuristics, correlation scoring, or cross-layer integration logic used by the confidential engine.",
+  "version": "1.0",
+  "type": "object",
+  "required": ["layer", "timestamp", "state", "context"],
+  "properties": {
+    "layer": {
+      "type": "string",
+      "description": "Name of the biological layer this record refers to.",
+      "enum": [
+        "Molecular",
+        "Cellular",
+        "Tissue",
+        "Organ",
+        "System",
+        "Whole-organism"
+      ]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of the event or observation."
+    },
+    "state": {
+      "type": "string",
+      "description": "Current execution state of the layer.",
+      "enum": ["idle", "standby", "active", "high_activity"]
+    },
+    "context": {
+      "type": "string",
+      "description": "Free-text or identifier describing the query/context that triggered this layer's activation. In the pilot demo this is a placeholder string; the real engine's context-detection logic is confidential."
+    },
+    "input_data": {
+      "type": "object",
+      "description": "Placeholder container for layer-specific input data. Structure is illustrative only — actual field sets used in production are not disclosed.",
+      "additionalProperties": true
+    },
+    "output_summary": {
+      "type": "object",
+      "description": "Placeholder container for the layer's contribution to the unified response. Real scoring, correlation, and integration values are not included in this public schema.",
+      "additionalProperties": true
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional non-sensitive metadata (e.g., schema_version, source system identifier).",
+      "properties": {
+        "schema_version": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
