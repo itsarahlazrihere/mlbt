@@ -1,0 +1,35 @@
+name: Lint — MLBT Pilot Demo
+
+# Runs automatically on every push and pull request targeting main.
+# Checks code style and formatting on the public pilot demo code only.
+# No confidential engine code is involved here.
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install linting tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff black
+
+      - name: Run ruff (style & error checks)
+        run: ruff check .
+
+      - name: Check formatting with black
+        run: black --check .
