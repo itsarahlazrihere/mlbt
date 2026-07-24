@@ -1,0 +1,154 @@
+"""
+Multi-Layer Brain Twin (MLBT) — Architecture Diagram Generator
+Version 1.0 — July 2026
+Author: Sarah LAZRI
+
+PUBLIC ILLUSTRATIVE SCRIPT.
+
+Generates a single static diagram summarizing the MLBT's public
+architecture and design philosophy, exactly as described in the README:
+- the 6 biological layers (Molecular -> Whole-organism)
+- the event-driven execution states (idle/standby/active/high activity)
+- the progressive workflow (Input -> ... -> Output)
+
+This script contains NO proprietary logic — it only draws boxes and
+arrows describing publicly documented concepts. Output: architecture.png
+"""
+
+import matplotlib.pyplot as plt
+from matplotlib.patches import FancyBboxPatch, FancyArrowPatch
+from matplotlib.lines import Line2D
+
+# ---------------------------------------------------------------------
+# Data (public, from README)
+# ---------------------------------------------------------------------
+
+LAYERS = [
+    "Molecular",
+    "Cellular",
+    "Tissue",
+    "Organ",
+    "System",
+    "Whole-organism",
+]
+
+WORKFLOW_STEPS = [
+    "Input",
+    "Context Detection",
+    "Layer Selection",
+    "Targeted Processing",
+    "Cross-Layer Integration",
+    "Prediction / Analysis",
+    "Output",
+]
+
+EXECUTION_STATES = [
+    ("Idle", "#d9d9d9"),
+    ("Standby", "#a9d6e5"),
+    ("Active", "#f6b26b"),
+    ("High Activity", "#e06666"),
+]
+
+
+def draw_box(ax, x, y, w, h, text, facecolor="white", edgecolor="black", fontsize=10, fontweight="normal"):
+    box = FancyBboxPatch(
+        (x, y), w, h,
+        boxstyle="round,pad=0.02,rounding_size=0.05",
+        linewidth=1.4,
+        edgecolor=edgecolor,
+        facecolor=facecolor,
+    )
+    ax.add_patch(box)
+    ax.text(x + w / 2, y + h / 2, text, ha="center", va="center",
+             fontsize=fontsize, fontweight=fontweight, wrap=True)
+    return box
+
+
+def draw_arrow(ax, start, end, color="black"):
+    arrow = FancyArrowPatch(
+        start, end,
+        arrowstyle="-|>", mutation_scale=14,
+        linewidth=1.4, color=color,
+    )
+    ax.add_patch(arrow)
+
+
+def build_diagram(output_path: str = "architecture.png"):
+    fig, ax = plt.subplots(figsize=(13, 9))
+    ax.set_xlim(0, 13)
+    ax.set_ylim(0, 9)
+    ax.axis("off")
+
+    fig.suptitle("Multi-Layer Brain Twin (MLBT) — Architecture Overview",
+                 fontsize=16, fontweight="bold")
+    ax.text(6.5, 8.55, "Enabling efficient, scalable, task-adaptive computation",
+            ha="center", fontsize=11, style="italic", color="#444444")
+
+    # -------------------------------------------------------------
+    # Left column: hierarchical biological layers
+    # -------------------------------------------------------------
+    ax.text(2.0, 7.9, "Biological Layers", fontsize=12, fontweight="bold", ha="center")
+
+    layer_box_h = 0.7
+    layer_gap = 0.15
+    top_y = 7.4
+    for i, layer in enumerate(LAYERS):
+        y = top_y - i * (layer_box_h + layer_gap)
+        draw_box(ax, 0.5, y, 3.0, layer_box_h, layer, facecolor="#eef3fb")
+        if i > 0:
+            prev_y = top_y - (i - 1) * (layer_box_h + layer_gap)
+            draw_arrow(ax, (2.0, prev_y), (2.0, y + layer_box_h), color="#5b7fa6")
+
+    ax.text(2.0, top_y - len(LAYERS) * (layer_box_h + layer_gap) + 0.35,
+            "Same system, different scales —\nconnected, not isolated.",
+            ha="center", fontsize=9, color="#555555")
+
+    # -------------------------------------------------------------
+    # Middle column: progressive workflow
+    # -------------------------------------------------------------
+    ax.text(6.5, 7.9, "Progressive Workflow", fontsize=12, fontweight="bold", ha="center")
+
+    step_box_h = 0.55
+    step_gap = 0.18
+    top_y_wf = 7.4
+    for i, step in enumerate(WORKFLOW_STEPS):
+        y = top_y_wf - i * (step_box_h + step_gap)
+        facecolor = "#fdf2e3" if step in ("Input", "Output") else "#fff8ec"
+        draw_box(ax, 5.0, y, 3.0, step_box_h, step, facecolor=facecolor, fontsize=9.5)
+        if i > 0:
+            prev_y = top_y_wf - (i - 1) * (step_box_h + step_gap)
+            draw_arrow(ax, (6.5, prev_y), (6.5, y + step_box_h), color="#c9822f")
+
+    # -------------------------------------------------------------
+    # Right column: execution states legend
+    # -------------------------------------------------------------
+    ax.text(10.8, 7.9, "Execution States", fontsize=12, fontweight="bold", ha="center")
+
+    state_box_h = 0.6
+    state_gap = 0.25
+    top_y_states = 7.3
+    for i, (state, color) in enumerate(EXECUTION_STATES):
+        y = top_y_states - i * (state_box_h + state_gap)
+        draw_box(ax, 9.3, y, 3.0, state_box_h, state, facecolor=color, fontsize=10)
+
+    ax.text(10.8, top_y_states - len(EXECUTION_STATES) * (state_box_h + state_gap) + 0.25,
+            "Only active components\nconsume resources.",
+            ha="center", fontsize=9, color="#555555")
+
+    # -------------------------------------------------------------
+    # Bottom banner: design philosophy
+    # -------------------------------------------------------------
+    draw_box(ax, 0.5, 0.15, 11.8, 1.15,
+              "Design Philosophy: inspired by biological organization rather\n"
+              "than linear computing. Multiple scales + adaptive computation\n"
+              "\u2192 flexible simulation, prediction, and decision support\n"
+              "without requiring the entire system active at all times.",
+              facecolor="#f3f3f3", fontsize=9.5)
+
+    plt.tight_layout(rect=[0, 0, 1, 0.96])
+    fig.savefig(output_path, dpi=200, bbox_inches="tight")
+    print(f"Diagram saved to: {output_path}")
+
+
+if __name__ == "__main__":
+    build_diagram()
