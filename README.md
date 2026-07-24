@@ -1,4 +1,4 @@
-# mldt
+# mlbt
 <img width="6912" height="3456" alt="MLBT" src="https://github.com/user-attachments/assets/6d3d2e33-f6fb-45af-bc72-85a5ac9cd275" />
 
 ## How the Multi-Layer Brain Twin Works
