@@ -3,8 +3,6 @@ name: Secret Scan — Gitleaks
 # Runs automatically on every push and pull request targeting main,
 # and on a weekly schedule. Scans the full commit history for
 # accidentally committed secrets (API keys, tokens, credentials).
-#
-# Important for a public repository maintained alongside multiple
 # other projects/environments, to catch any accidental leak early.
 
 on:
